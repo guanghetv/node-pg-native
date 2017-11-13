@@ -209,7 +209,7 @@ Client.prototype.query = function(text, values, cb) {
   if(typeof values == 'function') {
     cb = values;
     queryFn = function() { return self.pq.sendQuery(text); };
-    this.sqlArray.push(text);
+    this.sqlArray.push({ text });
   } else {
     queryFn = function() { return self.pq.sendQueryParams(text, values); };
     this.sqlArray.push({ text, values });
