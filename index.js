@@ -22,6 +22,9 @@ var Client = module.exports = function(config) {
   //allow config to specify returning results
   //as an array of values instead of a hash
   this.arrayMode = config.arrayMode || false;
+
+  this.sqlArray = [];
+
   var self = this;
 
   //lazy start the reader if notifications are listened for
@@ -206,8 +209,10 @@ Client.prototype.query = function(text, values, cb) {
   if(typeof values == 'function') {
     cb = values;
     queryFn = function() { return self.pq.sendQuery(text); };
+    this.sqlArray.push(text);
   } else {
     queryFn = function() { return self.pq.sendQueryParams(text, values); };
+    this.sqlArray.push({ text, values });
   }
 
   var self = this
